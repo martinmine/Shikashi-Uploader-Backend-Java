@@ -24,7 +24,7 @@ import java.io.InputStream;
 /**
  * Created by marti_000 on 07.06.2015.
  */
-public class UploadResource extends ServerResource {
+public class UploadResource extends AuthenticatedServerResource {
     private static final int MAX_FILE_SIZE = Integer.valueOf(SystemConfiguration.getInstance().getProperty("MAX_FILE_SIZE"));
 
     @Post
@@ -49,7 +49,7 @@ public class UploadResource extends ServerResource {
             return null;
         }
 
-        final UploadedContent upload = UploadedContentFactory.storeImage(inputStream, fileSize, item.getContentType(), getIpAddress(), item.getName());
+        final UploadedContent upload = UploadedContentFactory.storeImage(inputStream, fileSize, item.getContentType(), getIpAddress(), item.getName(), getUser());
         return RepresentationFactory.makeRepresentation(upload, ImageUploadRepresentation.class);
     }
 

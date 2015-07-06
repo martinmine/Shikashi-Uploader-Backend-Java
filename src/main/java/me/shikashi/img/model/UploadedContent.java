@@ -48,13 +48,14 @@ public class UploadedContent {
     public UploadedContent() {
     }
 
-    public UploadedContent(String mimeType, Blob content, String uploaderIp, String fileName) {
+    public UploadedContent(String mimeType, Blob content, String uploaderIp, String fileName, User owner) {
         this.uploaderIp = uploaderIp;
         this.mimeType = mimeType;
         this.content = content;
         this.uploaded = new Date();
         this.deleteKey = new BigInteger(130, RND).toString(32);
         this.fileName = fileName;
+        this.owner = owner;
     }
 
     public String getMimeType() {

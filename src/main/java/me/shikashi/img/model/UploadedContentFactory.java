@@ -36,12 +36,12 @@ public class UploadedContentFactory {
         }
     }
 
-    public static UploadedContent storeImage(final InputStream inputStream, final int fileSize, final String type, final String ip, final String fileName) {
+    public static UploadedContent storeImage(final InputStream inputStream, final int fileSize, final String type, final String ip, final String fileName, final User owner) {
         try (DatabaseInsertion<UploadedContent> query = HibernateUtil.getInstance().insert()) {
             final LobHelper lobHelper = query.getSession().getLobHelper();
             final Blob attachmentData = lobHelper.createBlob(inputStream, fileSize);
 
-            UploadedContent upload = new UploadedContent(type, attachmentData, ip, fileName);
+            UploadedContent upload = new UploadedContent(type, attachmentData, ip, fileName, owner);
             query.insert(upload);
 
             return upload;

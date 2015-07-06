@@ -48,24 +48,6 @@ public class UploadedContentResource extends ServerResource {
         };
     }
 
-    @Delete
-    public void deleteImage() {
-        final UploadedContent content = getUploadedContent();
-        final String deleteKey = getQuery().getValues("deleteKey");
-
-        if (content != null) {
-            if (content.getDeleteKey().equals(deleteKey)) {
-                try (DatabaseDeletion<UploadedContent> query = HibernateUtil.getInstance().delete()) {
-                    query.delete(content);
-                }
-
-                setStatus(Status.SUCCESS_OK);
-            } else {
-                setStatus(Status.CLIENT_ERROR_FORBIDDEN);
-            }
-        }
-    }
-
     private UploadedContent getUploadedContent() {
         final String key = ((String) getRequest().getAttributes().get("key")).split("\\.")[0];
         final UploadedContent upload = UploadedContentFactory.getImageUpload(key);
