@@ -43,6 +43,9 @@ public class UploadedContent {
     @ManyToOne
     private User owner;
 
+    @ImageUploadRepresentation
+    private int viewCount;
+
     private static final Random RND = new Random();
 
     public UploadedContent() {
@@ -56,6 +59,7 @@ public class UploadedContent {
         this.deleteKey = new BigInteger(130, RND).toString(32);
         this.fileName = fileName;
         this.owner = owner;
+        this.viewCount = 0;
     }
 
     public String getMimeType() {
@@ -78,5 +82,13 @@ public class UploadedContent {
 
     public String getDeleteKey() {
         return deleteKey;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void incrementViewCount() {
+        this.viewCount++;
     }
 }

@@ -24,6 +24,10 @@ public class UploadedContentFactory {
         }
 
         final long[] fs = Hashids.getInstance().decode(key);
+        if (fs.length == 0) {
+            return null;
+        }
+
         final int id = (int)fs[0] - PADDING;
         try (DatabaseQuery<UploadedContent> query = HibernateUtil.getInstance().query(UploadedContent.class)) {
             return query.where(Restrictions.eq("id", id)).getResult();

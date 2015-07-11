@@ -1,15 +1,15 @@
 package me.shikashi.img.resources;
 
-import me.shikashi.img.database.DatabaseDeletion;
+import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
 import org.apache.commons.io.IOUtils;
+import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
@@ -27,7 +27,7 @@ public class UploadedContentResource extends ServerResource {
     private static final Logger LOGGER = Logger.getLogger(UploadedContentResource.class.getSimpleName());
 
     @Get
-    public Representation getImage() {
+    public Representation getFile() {
         final UploadedContent upload = getUploadedContent();
 
         if (upload == null) {
@@ -37,7 +37,12 @@ public class UploadedContentResource extends ServerResource {
         final Blob blob = upload.getContent();
         final String contentType = upload.getMimeType();
 
-        return new OutputRepresentation(MediaType.valueOf(contentType)) {
+        upload.incrementViewCount();
+        try (DatabaseUpdate<UploadedContent> query = HibernateUtil.getInstance().update()) {
+            query.update(upload);
+        }
+
+        OutputRepresentation representation =  new OutputRepresentation(MediaType.valueOf(contentType)) {
             public void write(OutputStream os) {
                 try {
                     IOUtils.copy(blob.getBinaryStream(), os);
@@ -46,6 +51,14 @@ public class UploadedContentResource extends ServerResource {
                 }
             }
         };
+
+        if (!MediaType.valueOf(upload.getMimeType()).getMainType().equals(MediaType.IMAGE_ALL.getMainType())) {
+            final Disposition disposition = new Disposition(Disposition.TYPE_ATTACHMENT);
+            disposition.setFilename(upload.getFileName());
+            representation.setDisposition(disposition);
+        }
+
+        return representation;
     }
 
     private UploadedContent getUploadedContent() {

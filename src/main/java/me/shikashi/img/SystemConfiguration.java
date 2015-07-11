@@ -21,7 +21,7 @@ public class SystemConfiguration {
 
     private SystemConfiguration() {
         LOGGER.info("Reading config");
-        try (FileInputStream inputStream = new FileInputStream("config.properties")) {
+        try (FileInputStream inputStream = new FileInputStream("./config.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
