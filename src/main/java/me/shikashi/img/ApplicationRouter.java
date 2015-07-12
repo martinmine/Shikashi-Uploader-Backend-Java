@@ -25,6 +25,7 @@ public class ApplicationRouter extends Application {
         router.attach("/{key}", UploadedContentResource.class);
         router.attach("/{key}/delete", DeleteUploadResource.class);
 
+        setStatusService(new ShikashiStatusService());
         return router;
     }
 

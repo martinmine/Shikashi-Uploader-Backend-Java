@@ -52,13 +52,25 @@ public class UploadedContentResource extends ServerResource {
             }
         };
 
-        if (!MediaType.valueOf(upload.getMimeType()).getMainType().equals(MediaType.IMAGE_ALL.getMainType())) {
-            final Disposition disposition = new Disposition(Disposition.TYPE_ATTACHMENT);
-            disposition.setFilename(upload.getFileName());
-            representation.setDisposition(disposition);
-        }
+        //if (forceDownload(MediaType.valueOf(upload.getMimeType()))) {
+        final Disposition disposition = new Disposition(Disposition.TYPE_INLINE);
+        disposition.setFilename(upload.getFileName());
+        representation.setDisposition(disposition);
+        //}
 
         return representation;
+    }
+
+    private boolean forceDownload(final MediaType mediaType) {
+        if (mediaType.getMainType().equals(MediaType.IMAGE_ALL.getMainType())) {
+            return false;
+        } else if (mediaType.getMainType().equals(MediaType.VIDEO_ALL.getMainType())) {
+            return false;
+        } else if (mediaType.getMainType().equals(MediaType.AUDIO_ALL.getMainType())) {
+            return false;
+        }
+
+        return true;
     }
 
     private UploadedContent getUploadedContent() {
