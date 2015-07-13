@@ -14,6 +14,11 @@ import org.restlet.routing.Router;
  * Created by marti_000 on 07.06.2015.
  */
 public class ApplicationRouter extends Application {
+    public ApplicationRouter() {
+        super();
+        setStatusService(new ShikashiStatusService());
+    }
+
     @Override
     public Restlet createInboundRoot() {
         final Router router = RouterFactory.makeRouter(getContext());
@@ -25,7 +30,6 @@ public class ApplicationRouter extends Application {
         router.attach("/{key}", UploadedContentResource.class);
         router.attach("/{key}/delete", DeleteUploadResource.class);
 
-        setStatusService(new ShikashiStatusService());
         return router;
     }
 

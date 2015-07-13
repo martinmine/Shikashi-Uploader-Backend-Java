@@ -52,6 +52,12 @@ public class UploadedContentResource extends ServerResource {
             }
         };
 
+        try {
+            representation.setSize(blob.length());
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+
         //if (forceDownload(MediaType.valueOf(upload.getMimeType()))) {
         final Disposition disposition = new Disposition(Disposition.TYPE_INLINE);
         disposition.setFilename(upload.getFileName());
