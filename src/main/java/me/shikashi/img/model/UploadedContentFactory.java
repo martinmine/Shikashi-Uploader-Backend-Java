@@ -1,5 +1,8 @@
 package me.shikashi.img.model;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.gridfs.GridFS;
 import me.shikashi.img.SystemConfiguration;
 import me.shikashi.img.database.DatabaseDeletion;
 import me.shikashi.img.database.DatabaseInsertion;
@@ -38,14 +41,13 @@ public class UploadedContentFactory {
         try (DatabaseDeletion<UploadedContent> query = HibernateUtil.getInstance().delete()) {
             query.delete(content);
         }
+
+        UploadedBlobFactory.getInstance().deleteBlob(content.getId());
     }
 
-    public static UploadedContent storeImage(final InputStream inputStream, final int fileSize, final String type, final String ip, final String fileName, final User owner) {
+    public static UploadedContent storeImage(final int fileSize, final String type, final String ip, final String fileName, final User owner) {
         try (DatabaseInsertion<UploadedContent> query = HibernateUtil.getInstance().insert()) {
-            final LobHelper lobHelper = query.getSession().getLobHelper();
-            final Blob attachmentData = lobHelper.createBlob(inputStream, fileSize);
-
-            UploadedContent upload = new UploadedContent(type, attachmentData, ip, fileName, owner);
+            UploadedContent upload = new UploadedContent(type, fileSize, ip, fileName, owner);
             query.insert(upload);
 
             return upload;

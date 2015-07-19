@@ -1,6 +1,13 @@
 package me.shikashi.img.resources;
 
+import com.mongodb.DB;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSInputFile;
 import me.shikashi.img.SystemConfiguration;
+import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
 import me.shikashi.img.representations.RepresentationFactory;
@@ -29,6 +36,9 @@ public class UploadResource extends AuthenticatedServerResource {
 
     @Post
     public GsonRepresentation<UploadedContent> uploadImage(Representation representation) throws FileUploadException, IOException {
+        System.out.println("Received request");
+
+        // TODO: Get stream to the thing instead
         final FileItem item = new RestletFileUpload(new DiskFileItemFactory())
                 .parseRepresentation(representation)
                 .stream()
@@ -36,6 +46,8 @@ public class UploadResource extends AuthenticatedServerResource {
                 .findFirst()
                 .get();
 
+
+        System.out.println("Request received");
         if (item == null) {
             setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
             return null;
@@ -44,12 +56,15 @@ public class UploadResource extends AuthenticatedServerResource {
         final InputStream inputStream = item.getInputStream();
         final int fileSize = inputStream.available();
 
+
         if (fileSize > MAX_FILE_SIZE) {
             setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
             return null;
         }
 
-        final UploadedContent upload = UploadedContentFactory.storeImage(inputStream, fileSize, item.getContentType(), getIpAddress(), item.getName(), getUser());
+        final UploadedContent upload = UploadedContentFactory.storeImage(fileSize, item.getContentType(), getIpAddress(), item.getName(), getUser());
+        UploadedBlobFactory.getInstance().storeBlob(inputStream, upload.getId(), item.getContentType());
+
         return RepresentationFactory.makeRepresentation(upload, ImageUploadRepresentation.class);
     }
 

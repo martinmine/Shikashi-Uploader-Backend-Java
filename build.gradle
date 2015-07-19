@@ -23,4 +23,9 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.6.6'
     compile 'javax.transaction:jta:1.1'
     compile 'org.mindrot:jbcrypt:0.3m'
+    compile 'org.slf4j:slf4j-simple:1.6.6'
+    compile 'org.apache.tomcat:tomcat-catalina:8.0.24'
+    compile 'org.apache.tomcat:tomcat-util:8.0.24'
+    compile 'org.apache.tomcat.embed:tomcat-embed-core:8.0.24'
+    compile 'org.mongodb:mongo-java-driver:3.0.3'
 }

@@ -1,7 +1,12 @@
 package me.shikashi.img.resources;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
+import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
 import org.apache.commons.io.IOUtils;
@@ -34,7 +39,6 @@ public class UploadedContentResource extends ServerResource {
             return null;
         }
 
-        final Blob blob = upload.getContent();
         final String contentType = upload.getMimeType();
 
         upload.incrementViewCount();
@@ -44,25 +48,24 @@ public class UploadedContentResource extends ServerResource {
 
         OutputRepresentation representation =  new OutputRepresentation(MediaType.valueOf(contentType)) {
             public void write(OutputStream os) {
+                final GridFSDBFile file = UploadedBlobFactory.getInstance().getBlob(upload.getId());
+
+                if (file == null) {
+                    return;
+                }
                 try {
-                    IOUtils.copy(blob.getBinaryStream(), os);
-                } catch (IOException | SQLException ex) {
+                    file.writeTo(os);
+                } catch (IOException ex) {
                     LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         };
 
-        try {
-            representation.setSize(blob.length());
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+        representation.setSize(upload.getFileSize());
 
-        //if (forceDownload(MediaType.valueOf(upload.getMimeType()))) {
         final Disposition disposition = new Disposition(Disposition.TYPE_INLINE);
         disposition.setFilename(upload.getFileName());
         representation.setDisposition(disposition);
-        //}
 
         return representation;
     }

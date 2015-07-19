@@ -30,9 +30,6 @@ public class UploadedContent {
     @ImageUploadRepresentation
     private String fileName;
 
-    @Lob
-    private Blob content;
-
     @ImageUploadRepresentation
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploaded;
@@ -46,15 +43,18 @@ public class UploadedContent {
     @ImageUploadRepresentation
     private int viewCount;
 
+    @ImageUploadRepresentation
+    private long fileSize;
+
     private static final Random RND = new Random();
 
     public UploadedContent() {
     }
 
-    public UploadedContent(String mimeType, Blob content, String uploaderIp, String fileName, User owner) {
+    public UploadedContent(String mimeType, long fileSize, String uploaderIp, String fileName, User owner) {
         this.uploaderIp = uploaderIp;
+        this.fileSize = fileSize;
         this.mimeType = mimeType;
-        this.content = content;
         this.uploaded = new Date();
         this.deleteKey = new BigInteger(130, RND).toString(32);
         this.fileName = fileName;
@@ -62,12 +62,12 @@ public class UploadedContent {
         this.viewCount = 0;
     }
 
-    public String getMimeType() {
-        return mimeType;
+    public int getId() {
+        return id;
     }
 
-    public Blob getContent() {
-        return content;
+    public String getMimeType() {
+        return mimeType;
     }
 
     public User getOwner() {
@@ -90,5 +90,9 @@ public class UploadedContent {
 
     public void incrementViewCount() {
         this.viewCount++;
+    }
+
+    public long getFileSize() {
+        return fileSize;
     }
 }
