@@ -38,9 +38,9 @@ public class UploadedContentFactory {
         UploadedBlobFactory.getInstance().deleteBlob(content.getId());
     }
 
-    public static UploadedContent storeImage(final int fileSize, final String type, final String ip, final String fileName, final User owner) {
+    public static UploadedContent storeImage(final String type, final String ip, final String fileName, final User owner) {
         try (DatabaseInsertion<UploadedContent> query = HibernateUtil.getInstance().insert()) {
-            UploadedContent upload = new UploadedContent(type, fileSize, ip, fileName, owner);
+            UploadedContent upload = new UploadedContent(type, ip, fileName, owner);
             query.insert(upload);
 
             return upload;

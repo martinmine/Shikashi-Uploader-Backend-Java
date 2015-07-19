@@ -1,14 +1,21 @@
 package me.shikashi.img.resources;
 
 import me.shikashi.img.SystemConfiguration;
+import me.shikashi.img.database.DatabaseUpdate;
+import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
 import me.shikashi.img.representations.RepresentationFactory;
 import me.shikashi.img.representations.annotations.ImageUploadRepresentation;
+import me.shikashi.img.uploading.RestletRequestContextAdapter;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
 import org.restlet.Request;
 import org.restlet.data.Header;
 import org.restlet.data.Status;
@@ -29,36 +36,28 @@ public class UploadResource extends AuthenticatedServerResource {
 
     @Post
     public GsonRepresentation<UploadedContent> uploadImage(Representation representation) throws FileUploadException, IOException {
-        System.out.println("Received request");
+        final ServletFileUpload upload = new ServletFileUpload();
+        upload.setSizeMax(MAX_FILE_SIZE);
 
-        // TODO: Get stream to the thing instead
-        final FileItem item = new RestletFileUpload(new DiskFileItemFactory())
-                .parseRepresentation(representation)
-                .stream()
-                .filter(p -> !p.isFormField())
-                .findFirst()
-                .get();
+        final FileItemIterator iterator = upload.getItemIterator(new RestletRequestContextAdapter(representation));
 
-
-        System.out.println("Request received");
-        if (item == null) {
-            setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+        if (!iterator.hasNext()) {
             return null;
         }
 
-        final InputStream inputStream = item.getInputStream();
-        final int fileSize = inputStream.available();
+        final FileItemStream item = iterator.next();
+        final InputStream stream = item.openStream();
 
+        final UploadedContent uploadedContent = UploadedContentFactory.storeImage(item.getContentType(), getIpAddress(), item.getName(), getUser());
+        final long fileSize = UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getId(), item.getContentType());
 
-        if (fileSize > MAX_FILE_SIZE) {
-            setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-            return null;
+        uploadedContent.setFileSize(fileSize);
+
+        try (DatabaseUpdate<UploadedContent> query = HibernateUtil.getInstance().update()) {
+            query.update(uploadedContent);
         }
 
-        final UploadedContent upload = UploadedContentFactory.storeImage(fileSize, item.getContentType(), getIpAddress(), item.getName(), getUser());
-        UploadedBlobFactory.getInstance().storeBlob(inputStream, upload.getId(), item.getContentType());
-
-        return RepresentationFactory.makeRepresentation(upload, ImageUploadRepresentation.class);
+        return RepresentationFactory.makeRepresentation(uploadedContent, ImageUploadRepresentation.class);
     }
 
     private String getIpAddress() {

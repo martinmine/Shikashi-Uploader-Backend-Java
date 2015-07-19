@@ -50,9 +50,8 @@ public class UploadedContent {
     public UploadedContent() {
     }
 
-    public UploadedContent(String mimeType, long fileSize, String uploaderIp, String fileName, User owner) {
+    public UploadedContent(String mimeType, String uploaderIp, String fileName, User owner) {
         this.uploaderIp = uploaderIp;
-        this.fileSize = fileSize;
         this.mimeType = mimeType;
         this.uploaded = new Date();
         this.deleteKey = new BigInteger(130, RND).toString(32);
@@ -93,5 +92,9 @@ public class UploadedContent {
 
     public long getFileSize() {
         return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
     }
 }

@@ -39,11 +39,12 @@ public class UploadedBlobFactory {
         }
     }
 
-    public void storeBlob(final InputStream is, final int uploadId, final String contentType) {
-        final GridFSInputFile storedFile =  gridFS.createFile(is);
+    public long storeBlob(final InputStream is, final int uploadId, final String contentType) {
+        final GridFSInputFile storedFile = gridFS.createFile(is);
         storedFile.setFilename(String.valueOf(uploadId));
         storedFile.setContentType(contentType);
-
         storedFile.save();
+
+        return storedFile.getLength();
     }
 }
