@@ -9,12 +9,17 @@ import org.hashids.Hashids;
 import org.hibernate.criterion.Restrictions;
 
 /**
- * Created by marti_000 on 07.06.2015.
+ * Factory for user uploads.
  */
 public class UploadedContentFactory {
     private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("PADDING"));
 
-    public static UploadedContent getImageUpload(final String key) {
+    /**
+     * Finds an upload for a hash key.
+     * @param key Key for the upload.
+     * @return Persistent instance of {@code UploadedContent}, otherwise {@code false}.
+     */
+    public static UploadedContent getUpload(final String key) {
         if (key == null || key.length() == 0) {
             return null;
         }
@@ -30,7 +35,11 @@ public class UploadedContentFactory {
         }
     }
 
-    public static void deleteImage(final UploadedContent content) {
+    /**
+     * Deletes an upload.
+     * @param content The upload to delete.
+     */
+    public static void deleteUpload(final UploadedContent content) {
         try (DatabaseDeletion<UploadedContent> query = HibernateUtil.getInstance().delete()) {
             query.delete(content);
         }
@@ -38,7 +47,15 @@ public class UploadedContentFactory {
         UploadedBlobFactory.getInstance().deleteBlob(content.getId());
     }
 
-    public static UploadedContent storeImage(final String type, final String ip, final String fileName, final User owner) {
+    /**
+     * Creates and stores metadata about an upload in a {@code UploadedContent}.
+     * @param type Content-type.
+     * @param ip IP address of the uploader.
+     * @param fileName Name of file that was uploaded.
+     * @param owner Owner of the upload.
+     * @return A new instance of {@code UploadedContent}.
+     */
+    public static UploadedContent persistUploadMetadata(final String type, final String ip, final String fileName, final User owner) {
         try (DatabaseInsertion<UploadedContent> query = HibernateUtil.getInstance().insert()) {
             UploadedContent upload = new UploadedContent(type, ip, fileName, owner);
             query.insert(upload);

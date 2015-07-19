@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 /**
- * Created by marti_000 on 09.06.2015.
+ * Contains data about an API key.
  */
 @Entity
 public class APIKey {

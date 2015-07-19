@@ -20,11 +20,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by marti_000 on 07.06.2015.
+ * Resource for accessing the uploaded content.
  */
 public class UploadedContentResource extends ServerResource {
     private static final Logger LOGGER = Logger.getLogger(UploadedContentResource.class.getSimpleName());
 
+    /**
+     * Gets a file from the database.
+     * @return A representation that streams the content from the data store.
+     */
     @Get
     public Representation getFile() {
         final UploadedContent upload = getUploadedContent();
@@ -64,21 +68,9 @@ public class UploadedContentResource extends ServerResource {
         return representation;
     }
 
-    private boolean forceDownload(final MediaType mediaType) {
-        if (mediaType.getMainType().equals(MediaType.IMAGE_ALL.getMainType())) {
-            return false;
-        } else if (mediaType.getMainType().equals(MediaType.VIDEO_ALL.getMainType())) {
-            return false;
-        } else if (mediaType.getMainType().equals(MediaType.AUDIO_ALL.getMainType())) {
-            return false;
-        }
-
-        return true;
-    }
-
     private UploadedContent getUploadedContent() {
         final String key = ((String) getRequest().getAttributes().get("key")).split("\\.")[0];
-        final UploadedContent upload = UploadedContentFactory.getImageUpload(key);
+        final UploadedContent upload = UploadedContentFactory.getUpload(key);
 
         if (upload == null) {
             setStatus(Status.CLIENT_ERROR_NOT_FOUND);

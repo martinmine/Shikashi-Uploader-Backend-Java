@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * image of gibby
+ * Represents metadata about an upload.
  */
 @Entity
 public class UploadedContent {

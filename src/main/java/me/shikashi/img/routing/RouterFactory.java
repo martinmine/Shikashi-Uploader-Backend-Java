@@ -12,7 +12,7 @@ import org.restlet.routing.Router;
 import org.restlet.util.Series;
 
 /**
- * Created by marti_000 on 16.06.2015.
+ * Creates a router that allows any website to use this API by modifying the HTTP access-control-allow.* header.
  */
 public class RouterFactory {
     private RouterFactory() {

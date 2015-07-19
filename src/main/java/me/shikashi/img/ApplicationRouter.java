@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by marti_000 on 07.06.2015.
+ * Contains main entry and the routing of resources.
  */
 public class ApplicationRouter extends Application {
     public ApplicationRouter() {
@@ -37,6 +37,11 @@ public class ApplicationRouter extends Application {
         return router;
     }
 
+    /**
+     * Application main entry.
+     * @param args Command line arguments.
+     * @throws Exception Something really bad happened.
+     */
     public static void main(String[] args) throws Exception {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);

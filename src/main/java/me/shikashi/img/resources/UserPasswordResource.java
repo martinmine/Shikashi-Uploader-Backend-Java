@@ -6,7 +6,7 @@ import org.restlet.data.Status;
 import org.restlet.resource.Post;
 
 /**
- * Created by marti_000 on 16.06.2015.
+ * Resource for resetting the password for the user.
  */
 public class UserPasswordResource extends AuthenticatedServerResource {
     @Post

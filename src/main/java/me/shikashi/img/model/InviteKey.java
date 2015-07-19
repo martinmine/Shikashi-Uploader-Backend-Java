@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by marti_000 on 16.06.2015.
+ * An invite key which the user has to provide when registering on the service.
  */
 @Entity
 public class InviteKey {

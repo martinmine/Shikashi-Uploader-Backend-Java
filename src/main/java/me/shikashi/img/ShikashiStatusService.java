@@ -11,9 +11,17 @@ import org.restlet.service.StatusService;
 import java.io.*;
 
 /**
- * Created by Martin on 12.07.2015.
+ * Handles the sending of error pages.
  */
 public class ShikashiStatusService extends StatusService {
+
+    /**
+     * Overrides the default 404 page and sends the contents of 404.html instead.
+     * @param status Current status.
+     * @param request Current request.
+     * @param response Current response.
+     * @return A representation of 404.html if the status code is 404. Otherwise, return default representation.
+     */
     @Override
     public Representation toRepresentation(Status status, Request request, Response response) {
         if (status.getCode() == 404) {

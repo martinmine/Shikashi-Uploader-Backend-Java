@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by marti_000 on 08.06.2015.
+ * Provides configuration information about the system.
  */
 public class SystemConfiguration {
     private static final Logger LOGGER = Logger.getLogger(SystemConfiguration.class.getSimpleName());
@@ -15,6 +15,9 @@ public class SystemConfiguration {
 
     private static final SystemConfiguration INSTANCE = new SystemConfiguration();
 
+    /**
+     * @return Singleton instance of {@code SystemConfiguration}.
+     */
     public static SystemConfiguration getInstance() {
         return INSTANCE;
     }
@@ -28,6 +31,11 @@ public class SystemConfiguration {
         }
     }
 
+    /**
+     * Gets the property value for a configuration.
+     * @param key Key for the config.
+     * @return Value for the config option, {@code null} if not found.
+     */
     public String getProperty(final String key) {
         return properties.getProperty(key);
     }

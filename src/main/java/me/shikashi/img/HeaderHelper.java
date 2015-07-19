@@ -43,6 +43,12 @@ public class HeaderHelper {
         return (Series<Header>)request.getAttributes().get(HEADER_ATTRIBUTE);
     }
 
+    /**
+     * Gets the HTTP header value for a HTTP request.
+     * @param fieldName The name of the header field.
+     * @param request The HTTP request to get the header value for.
+     * @return The value of the HTTP header.
+     */
     public static String getHeaderValue(final String fieldName, final Request request) {
         return getRequestHeaders(request).getValues(fieldName);
     }

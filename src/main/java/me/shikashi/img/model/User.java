@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by marti_000 on 09.06.2015.
+ * Representing information about a registered user.
  */
 @Entity
 public class User {

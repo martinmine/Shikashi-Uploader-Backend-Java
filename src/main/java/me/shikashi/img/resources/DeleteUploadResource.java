@@ -6,9 +6,14 @@ import org.restlet.data.Status;
 import org.restlet.resource.Delete;
 
 /**
- * Created by marti_000 on 17.06.2015.
+ * Enables deletion of a file upload. This resource is decoupled from {@code UploadResource} as the DELETE
+ * requires that the user has sufficient rights towards the resource.
  */
 public class DeleteUploadResource extends AuthenticatedServerResource {
+
+    /**
+     * Deletes an upload if the user is the owner of the upload.
+     */
     @Delete
     public void deleteUpload() {
         final UploadedContent content = getUploadedContent();
@@ -23,13 +28,13 @@ public class DeleteUploadResource extends AuthenticatedServerResource {
             return;
         }
 
-        UploadedContentFactory.deleteImage(content);
+        UploadedContentFactory.deleteUpload(content);
         setStatus(Status.SUCCESS_OK);
     }
 
     private UploadedContent getUploadedContent() {
         final String key = ((String) getRequest().getAttributes().get("key")).split("\\.")[0];
-        final UploadedContent upload = UploadedContentFactory.getImageUpload(key);
+        final UploadedContent upload = UploadedContentFactory.getUpload(key);
 
         if (upload == null) {
             setStatus(Status.CLIENT_ERROR_NOT_FOUND);

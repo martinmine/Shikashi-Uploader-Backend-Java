@@ -6,9 +6,15 @@ import me.shikashi.img.database.HibernateUtil;
 import org.hibernate.criterion.Restrictions;
 
 /**
- * Created by marti_000 on 09.06.2015.
+ * Factory class for API keys.
  */
 public class APIKeyFactory {
+
+    /**
+     * Creates a new API key for a user.
+     * @param user User to create the API key for.
+     * @return The generated key.
+     */
     public static APIKey createKey(User user) {
         final APIKey key = new APIKey(user);
 
@@ -18,6 +24,12 @@ public class APIKeyFactory {
         return key;
     }
 
+    /**
+     * Gets an existing API key.
+     * @param key Random token for the key.
+     * @param id Unique ID for the key.
+     * @return {@code APIKey} if exists, otherwise {@code null}.
+     */
     public static APIKey getKey(final String key, final int id) {
         try (DatabaseQuery<APIKey> query = HibernateUtil.getInstance().query(APIKey.class)) {
             return query.where(Restrictions.eq("id", id))

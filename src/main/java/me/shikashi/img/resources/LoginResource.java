@@ -13,9 +13,15 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 /**
- * Created by marti_000 on 09.06.2015.
+ * Provides login for the user.
  */
 public class LoginResource extends ServerResource {
+
+    /**
+     * Authenticates the user and generates an auth token.
+     * @param form Form data with email and password.
+     * @return A representation of an auth key, {@code null} if the credentials were invalid.
+     */
     @Post
     public GsonRepresentation<APIKey> login(Form form) {
         final String email = form.getFirstValue("email");

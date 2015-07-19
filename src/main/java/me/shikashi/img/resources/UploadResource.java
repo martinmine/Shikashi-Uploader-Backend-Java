@@ -1,5 +1,6 @@
 package me.shikashi.img.resources;
 
+import me.shikashi.img.HeaderHelper;
 import me.shikashi.img.SystemConfiguration;
 import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
@@ -9,17 +10,11 @@ import me.shikashi.img.model.UploadedContent;
 import me.shikashi.img.representations.RepresentationFactory;
 import me.shikashi.img.representations.annotations.ImageUploadRepresentation;
 import me.shikashi.img.uploading.RestletRequestContextAdapter;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
-import org.restlet.Request;
 import org.restlet.data.Header;
-import org.restlet.data.Status;
-import org.restlet.ext.fileupload.RestletFileUpload;
 import org.restlet.ext.gson.GsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
@@ -29,11 +24,18 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by marti_000 on 07.06.2015.
+ * Resource for handling new file uploads.
  */
 public class UploadResource extends AuthenticatedServerResource {
     private static final int MAX_FILE_SIZE = Integer.valueOf(SystemConfiguration.getInstance().getProperty("MAX_FILE_SIZE"));
 
+    /**
+     * Stores a new file upload for the user. First, the metadata of the file is stored. The file is then stored.
+     * @param representation Representation of the current HTTP request.
+     * @return A representation of the file upload. {@code null} if no upload was received.
+     * @throws FileUploadException
+     * @throws IOException
+     */
     @Post
     public GsonRepresentation<UploadedContent> uploadImage(Representation representation) throws FileUploadException, IOException {
         final ServletFileUpload upload = new ServletFileUpload();
@@ -48,7 +50,7 @@ public class UploadResource extends AuthenticatedServerResource {
         final FileItemStream item = iterator.next();
         final InputStream stream = item.openStream();
 
-        final UploadedContent uploadedContent = UploadedContentFactory.storeImage(item.getContentType(), getIpAddress(), item.getName(), getUser());
+        final UploadedContent uploadedContent = UploadedContentFactory.persistUploadMetadata(item.getContentType(), getIpAddress(), item.getName(), getUser());
         final long fileSize = UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getId(), item.getContentType());
 
         uploadedContent.setFileSize(fileSize);
@@ -61,24 +63,13 @@ public class UploadResource extends AuthenticatedServerResource {
     }
 
     private String getIpAddress() {
-        final Series<Header> headers = getRequestHeaders(getRequest());
+        final Series<Header> headers = HeaderHelper.getRequestHeaders(getRequest());
 
+        // TODO: Figure out what LiteSpeed does with the ip
         if (headers.getValues("HTTP_CF_CONNECTING_IP") != null) {
             return headers.getValues("HTTP_CF_CONNECTING_IP");
         } else {
             return getRequest().getClientInfo().getAddress();
         }
-    }
-
-    private static final String HEADER_ATTRIBUTE = "org.restlet.http.headers";
-
-    /**
-     * Gets the request headers for an incoming request.
-     * @param request The incoming request.
-     * @return A Series of all the headers.
-     */
-    @SuppressWarnings("unchecked")
-    public static Series<Header> getRequestHeaders(Request request) {
-        return (Series<Header>)request.getAttributes().get(HEADER_ATTRIBUTE);
     }
 }

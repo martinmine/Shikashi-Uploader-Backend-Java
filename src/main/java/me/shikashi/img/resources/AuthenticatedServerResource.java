@@ -9,7 +9,8 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ServerResource;
 
 /**
- * Created by marti_000 on 16.06.2015.
+ * Performs authorization of the user. Resources that implements this class requires that the user
+ * has provided a valid auth key.
  */
 public abstract class AuthenticatedServerResource extends ServerResource {
     private User user;

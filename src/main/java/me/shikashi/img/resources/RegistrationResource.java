@@ -8,10 +8,14 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
 /**
- * Created by marti_000 on 09.06.2015.
+ * Resources providing registration of users.
  */
 public class RegistrationResource extends ServerResource {
 
+    /**
+     * Performs the registration of a user.
+     * @param form Form data.
+     */
     @Post
     public void registerUser(Form form) {
         final String email = form.getFirstValue("email");

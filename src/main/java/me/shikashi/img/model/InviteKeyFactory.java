@@ -6,9 +6,15 @@ import me.shikashi.img.database.HibernateUtil;
 import org.hibernate.criterion.Restrictions;
 
 /**
- * Created by marti_000 on 16.06.2015.
+ * Factory class for invite keys.
  */
 public class InviteKeyFactory {
+
+    /**
+     * Finds and deletes an image key if it exists.
+     * @param key The invite key.
+     * @return {@code InviteKey} if exists, otherwise {@code null}.
+     */
     public static InviteKey grabInviteKey(final String key) {
         final InviteKey inviteKey = getInviteKey(key);
 
@@ -21,6 +27,11 @@ public class InviteKeyFactory {
         return inviteKey;
     }
 
+    /**
+     * Finds an invite key.
+     * @param key The invite key.
+     * @return {@code InviteKey} if exists, otherwise {@code null}.
+     */
     private static InviteKey getInviteKey(final String key) {
         try (DatabaseQuery<InviteKey> query = HibernateUtil.getInstance().query(InviteKey.class)) {
             return query.where(Restrictions.eq("inviteKey", key)).getResult();
