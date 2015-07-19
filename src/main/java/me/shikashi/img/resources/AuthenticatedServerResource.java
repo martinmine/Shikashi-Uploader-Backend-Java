@@ -4,11 +4,9 @@ import me.shikashi.img.HeaderHelper;
 import me.shikashi.img.model.APIKey;
 import me.shikashi.img.model.APIKeyFactory;
 import me.shikashi.img.model.User;
-import org.restlet.data.Header;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ServerResource;
-import org.restlet.util.Series;
 
 /**
  * Created by marti_000 on 16.06.2015.

@@ -7,7 +7,6 @@ import org.hashids.Hashids;
 
 import javax.persistence.*;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.util.Date;
 import java.util.Random;
 

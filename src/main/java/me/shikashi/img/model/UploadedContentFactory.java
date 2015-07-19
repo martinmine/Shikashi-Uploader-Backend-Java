@@ -1,19 +1,12 @@
 package me.shikashi.img.model;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import com.mongodb.gridfs.GridFS;
 import me.shikashi.img.SystemConfiguration;
 import me.shikashi.img.database.DatabaseDeletion;
 import me.shikashi.img.database.DatabaseInsertion;
 import me.shikashi.img.database.DatabaseQuery;
 import me.shikashi.img.database.HibernateUtil;
 import org.hashids.Hashids;
-import org.hibernate.LobHelper;
 import org.hibernate.criterion.Restrictions;
-
-import java.io.InputStream;
-import java.sql.Blob;
 
 /**
  * Created by marti_000 on 07.06.2015.

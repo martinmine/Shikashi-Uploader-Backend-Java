@@ -1,11 +1,5 @@
 package me.shikashi.img.resources;
 
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSInputFile;
 import me.shikashi.img.SystemConfiguration;
 import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
@@ -22,7 +16,6 @@ import org.restlet.ext.fileupload.RestletFileUpload;
 import org.restlet.ext.gson.GsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
-import org.restlet.resource.ServerResource;
 import org.restlet.util.Series;
 
 import java.io.IOException;

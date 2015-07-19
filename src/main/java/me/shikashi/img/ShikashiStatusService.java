@@ -6,7 +6,6 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.resource.Resource;
 import org.restlet.service.StatusService;
 
 import java.io.*;
