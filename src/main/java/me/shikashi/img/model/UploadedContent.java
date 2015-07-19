@@ -2,7 +2,7 @@ package me.shikashi.img.model;
 
 import me.shikashi.img.SystemConfiguration;
 import me.shikashi.img.representations.annotations.ExposedMethod;
-import me.shikashi.img.representations.annotations.ImageUploadRepresentation;
+import me.shikashi.img.representations.annotations.FileUploadRepresentation;
 import org.hashids.Hashids;
 
 import javax.persistence.*;
@@ -21,28 +21,28 @@ public class UploadedContent {
     @GeneratedValue
     private int id;
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     private String mimeType;
 
     private String uploaderIp;
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     private String fileName;
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploaded;
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     private String deleteKey;
 
     @ManyToOne
     private User owner;
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     private int viewCount;
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     private long fileSize;
 
     private static final Random RND = new Random();
@@ -72,7 +72,7 @@ public class UploadedContent {
         return owner;
     }
 
-    @ImageUploadRepresentation
+    @FileUploadRepresentation
     @ExposedMethod("key")
     public String getIdHash() {
         return Hashids.getInstance().encode(id + PADDING);

@@ -8,7 +8,7 @@ import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
 import me.shikashi.img.representations.RepresentationFactory;
-import me.shikashi.img.representations.annotations.ImageUploadRepresentation;
+import me.shikashi.img.representations.annotations.FileUploadRepresentation;
 import me.shikashi.img.uploading.RestletRequestContextAdapter;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -59,7 +59,7 @@ public class UploadResource extends AuthenticatedServerResource {
             query.update(uploadedContent);
         }
 
-        return RepresentationFactory.makeRepresentation(uploadedContent, ImageUploadRepresentation.class);
+        return RepresentationFactory.makeRepresentation(uploadedContent, FileUploadRepresentation.class);
     }
 
     private String getIpAddress() {
