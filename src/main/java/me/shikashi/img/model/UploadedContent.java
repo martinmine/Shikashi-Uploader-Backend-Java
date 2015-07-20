@@ -6,9 +6,7 @@ import me.shikashi.img.representations.annotations.FileUploadRepresentation;
 import org.hashids.Hashids;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * Represents metadata about an upload.
@@ -33,9 +31,6 @@ public class UploadedContent {
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploaded;
 
-    @FileUploadRepresentation
-    private String deleteKey;
-
     @ManyToOne
     private User owner;
 
@@ -45,8 +40,6 @@ public class UploadedContent {
     @FileUploadRepresentation
     private long fileSize;
 
-    private static final Random RND = new Random();
-
     public UploadedContent() {
     }
 
@@ -54,7 +47,6 @@ public class UploadedContent {
         this.uploaderIp = uploaderIp;
         this.mimeType = mimeType;
         this.uploaded = new Date();
-        this.deleteKey = new BigInteger(130, RND).toString(32);
         this.fileName = fileName;
         this.owner = owner;
         this.viewCount = 0;
@@ -76,10 +68,6 @@ public class UploadedContent {
     @ExposedMethod("key")
     public String getIdHash() {
         return Hashids.getInstance().encode(id + PADDING);
-    }
-
-    public String getDeleteKey() {
-        return deleteKey;
     }
 
     public String getFileName() {

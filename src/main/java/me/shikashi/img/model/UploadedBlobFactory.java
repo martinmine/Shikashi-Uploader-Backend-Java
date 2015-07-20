@@ -12,11 +12,11 @@ import java.io.InputStream;
  * Manages interaction with MongoDB where the contents of the file uploads are stored.
  */
 public class UploadedBlobFactory {
+    private static final UploadedBlobFactory INSTANCE = new UploadedBlobFactory();
+
     private final MongoClient client;
     private final DB db;
     private final GridFS gridFS;
-
-    private static final UploadedBlobFactory INSTANCE = new UploadedBlobFactory();
 
     /**
      * @return Singleton instance.
