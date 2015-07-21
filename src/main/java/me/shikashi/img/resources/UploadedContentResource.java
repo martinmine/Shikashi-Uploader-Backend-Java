@@ -61,9 +61,16 @@ public class UploadedContentResource extends ServerResource {
 
         representation.setSize(upload.getFileSize());
 
-        final Disposition disposition = new Disposition(Disposition.TYPE_INLINE);
-        disposition.setFilename(upload.getFileName());
-        representation.setDisposition(disposition);
+        if (upload.getFileName().endsWith(".swf") || "application/x-shockwave-flash".equals(upload.getMimeType())) {
+            final Disposition disposition = new Disposition(Disposition.TYPE_ATTACHMENT);
+            disposition.setFilename(upload.getFileName());
+            representation.setDisposition(disposition);
+        } else {
+            final Disposition disposition = new Disposition(Disposition.TYPE_INLINE);
+            disposition.setFilename(upload.getFileName());
+            representation.setDisposition(disposition);
+        }
+
 
         return representation;
     }

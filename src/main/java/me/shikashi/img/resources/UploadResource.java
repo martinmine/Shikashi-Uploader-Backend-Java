@@ -37,7 +37,7 @@ public class UploadResource extends AuthenticatedServerResource {
      * @throws IOException
      */
     @Post
-    public GsonRepresentation<UploadedContent> uploadImage(Representation representation) throws FileUploadException, IOException {
+    public GsonRepresentation<UploadedContent> uploadFile(Representation representation) throws FileUploadException, IOException {
         final ServletFileUpload upload = new ServletFileUpload();
         upload.setSizeMax(MAX_FILE_SIZE);
 
@@ -49,6 +49,10 @@ public class UploadResource extends AuthenticatedServerResource {
 
         final FileItemStream item = iterator.next();
         final InputStream stream = item.openStream();
+
+        if (item.getName().endsWith(".exe")) {
+            return null;
+        }
 
         final UploadedContent uploadedContent = UploadedContentFactory.persistUploadMetadata(item.getContentType(), getIpAddress(), item.getName(), getUser());
         final long fileSize = UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getId(), item.getContentType());
@@ -65,9 +69,8 @@ public class UploadResource extends AuthenticatedServerResource {
     private String getIpAddress() {
         final Series<Header> headers = HeaderHelper.getRequestHeaders(getRequest());
 
-        // TODO: Figure out what LiteSpeed does with the ip
-        if (headers.getValues("HTTP_CF_CONNECTING_IP") != null) {
-            return headers.getValues("HTTP_CF_CONNECTING_IP");
+        if (headers.getValues("X-Forwarded-For") != null) {
+            return headers.getValues("X-Forwarded-For");
         } else {
             return getRequest().getClientInfo().getAddress();
         }
