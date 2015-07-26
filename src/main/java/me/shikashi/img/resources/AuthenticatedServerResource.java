@@ -40,7 +40,12 @@ public abstract class AuthenticatedServerResource extends ServerResource {
      * Authenticates the user and fetches session and user data.
      */
     public void authenticate() {
-        final String[] authHeader = HeaderHelper.getHeaderValue("Authorization", getRequest()).split("-");
+        final String authString = HeaderHelper.getHeaderValue("Authorization", getRequest());
+        if (authString == null || authString.length() == 0) {
+            return;
+        }
+
+        final String[] authHeader = authString.split("-");
 
         final String key = authHeader[0];
         final String id = authHeader[1];

@@ -12,7 +12,7 @@ import org.hibernate.criterion.Restrictions;
  * Factory for user uploads.
  */
 public class UploadedContentFactory {
-    private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("PADDING"));
+    private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("ID_PADDING"));
 
     /**
      * Finds an upload for a hash key.
