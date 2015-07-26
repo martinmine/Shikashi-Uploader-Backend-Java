@@ -38,16 +38,16 @@ public class HibernateUtil {
         configuration.configure();
         String configString = configuration.getProperty("hibernate.hikari.dataSource.url");
 
-        configString = configString.replace("${env.DB_HOST}", SystemConfiguration.getInstance().getProperty("DB_HOST"));
-        configString = configString.replace("${env.DB_PORT}", SystemConfiguration.getInstance().getProperty("DB_PORT"));
-        configString = configString.replace("${env.DB_NAME}", SystemConfiguration.getInstance().getProperty("DB_NAME"));
+        configString = configString.replace("${env.DB_HOST}", SystemConfiguration.getInstance().getProperty("RDS_HOSTNAME"));
+        configString = configString.replace("${env.DB_PORT}", SystemConfiguration.getInstance().getProperty("RDS_PORT"));
+        configString = configString.replace("${env.DB_NAME}", SystemConfiguration.getInstance().getProperty("RDS_DB_NAME"));
         configuration.setProperty(HIBERNATE_CONNECTION_URL, configString);
         configuration.setProperty(HIKARI_CONNECTION_URL, configString);
 
-        configuration.setProperty("hibernate.connection.username", SystemConfiguration.getInstance().getProperty("DB_USERNAME"));
-        configuration.setProperty("hibernate.hikari.dataSource.user", SystemConfiguration.getInstance().getProperty("DB_USERNAME"));
-        configuration.setProperty("hibernate.connection.password", SystemConfiguration.getInstance().getProperty("DB_PASSWORD"));
-        configuration.setProperty("hibernate.hikari.dataSource.password", SystemConfiguration.getInstance().getProperty("DB_PASSWORD"));
+        configuration.setProperty("hibernate.connection.username", SystemConfiguration.getInstance().getProperty("RDS_USERNAME"));
+        configuration.setProperty("hibernate.hikari.dataSource.user", SystemConfiguration.getInstance().getProperty("RDS_USERNAME"));
+        configuration.setProperty("hibernate.connection.password", SystemConfiguration.getInstance().getProperty("RDS_PASSWORD"));
+        configuration.setProperty("hibernate.hikari.dataSource.password", SystemConfiguration.getInstance().getProperty("RDS_PASSWORD"));
 
         LOGGER.info("Initializing service registry");
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
