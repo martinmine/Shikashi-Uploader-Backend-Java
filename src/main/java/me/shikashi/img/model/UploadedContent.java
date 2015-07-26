@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 public class UploadedContent {
-    private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("PADDING"));
+    private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("ID_PADDING"));
 
     @Id
     @GeneratedValue

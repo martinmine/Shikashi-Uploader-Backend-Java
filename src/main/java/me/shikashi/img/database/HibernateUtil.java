@@ -43,6 +43,7 @@ public class HibernateUtil {
         configString = configString.replace("${env.DB_NAME}", SystemConfiguration.getInstance().getProperty("RDS_DB_NAME"));
         configuration.setProperty(HIBERNATE_CONNECTION_URL, configString);
         configuration.setProperty(HIKARI_CONNECTION_URL, configString);
+        LOGGER.info("Connecting to " + configString);
 
         configuration.setProperty("hibernate.connection.username", SystemConfiguration.getInstance().getProperty("RDS_USERNAME"));
         configuration.setProperty("hibernate.hikari.dataSource.user", SystemConfiguration.getInstance().getProperty("RDS_USERNAME"));

@@ -37,6 +37,13 @@ public class SystemConfiguration {
      * @return Value for the config option, {@code null} if not found.
      */
     public String getProperty(final String key) {
-        return System.getenv(key);
+        String value;
+        if ((value = System.getProperty(key)) != null) {
+            return value;
+        } else if ((value = System.getenv(key)) != null) {
+            return value;
+        }
+
+        return null;
     }
 }
