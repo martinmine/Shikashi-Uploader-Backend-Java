@@ -16,16 +16,16 @@ import java.io.*;
 public class ShikashiStatusService extends StatusService {
 
     /**
-     * Overrides the default 404 page and sends the contents of 404.html instead.
+     * Overrides the default 404 page and sends the contents of b0ss.html instead.
      * @param status Current status.
      * @param request Current request.
      * @param response Current response.
-     * @return A representation of 404.html if the status code is 404. Otherwise, return default representation.
+     * @return A representation of b0ss.html if the status code is 404. Otherwise, return default representation.
      */
     @Override
     public Representation toRepresentation(Status status, Request request, Response response) {
         if (status.getCode() == 404) {
-            return new FileRepresentation(new File("404.html"), MediaType.TEXT_HTML);
+            return new FileRepresentation(new File("b0ss.html"), MediaType.TEXT_HTML);
         }
 
         return super.toRepresentation(status, request, response);

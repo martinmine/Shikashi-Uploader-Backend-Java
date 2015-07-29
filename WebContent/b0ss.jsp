@@ -1,6 +1,7 @@
+<%@ page isErrorPage="true"%>
 <html>
 <head>
-   <title>Ey Boss!</title>
+  <title>Ey Boss!</title>
 </head>
 <body style="font-family: sans-serif;">
 <p style="font-size: 1.2em;font-weight: bold;margin: 1em 0px;">Not Found</p>

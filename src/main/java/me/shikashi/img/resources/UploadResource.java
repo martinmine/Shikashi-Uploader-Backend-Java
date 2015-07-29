@@ -2,8 +2,6 @@ package me.shikashi.img.resources;
 
 import me.shikashi.img.HeaderHelper;
 import me.shikashi.img.SystemConfiguration;
-import me.shikashi.img.database.DatabaseUpdate;
-import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
@@ -15,6 +13,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.restlet.data.Header;
+import org.restlet.data.Status;
 import org.restlet.ext.gson.GsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
@@ -54,14 +53,17 @@ public class UploadResource extends AuthenticatedServerResource {
             return null;
         }
 
-        final UploadedContent uploadedContent = UploadedContentFactory.persistUploadMetadata(item.getContentType(), getIpAddress(), item.getName(), getUser());
-        final long fileSize = UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getId(), item.getContentType());
+        String sizeString = HeaderHelper.getHeaderValue("UploadFileSize", getRequest());
 
-        uploadedContent.setFileSize(fileSize);
-
-        try (DatabaseUpdate<UploadedContent> query = HibernateUtil.getInstance().update()) {
-            query.update(uploadedContent);
+        if (sizeString == null || sizeString.length() == 0) {
+            setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+            return null;
         }
+
+        long fileSize = Long.valueOf(sizeString);
+
+        final UploadedContent uploadedContent = UploadedContentFactory.persistUploadMetadata(item.getContentType(), getIpAddress(), item.getName(), getUser(), fileSize);
+        UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getIdHash(), item.getContentType(), fileSize, item.getName());
 
         return RepresentationFactory.makeRepresentation(uploadedContent, FileUploadRepresentation.class);
     }

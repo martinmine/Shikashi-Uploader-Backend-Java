@@ -30,6 +30,10 @@ public class UploadedContentFactory {
         }
 
         final int id = (int)fs[0] - PADDING;
+        return getUpload(id);
+    }
+
+    public static UploadedContent getUpload(final int id) {
         try (DatabaseQuery<UploadedContent> query = HibernateUtil.getInstance().query(UploadedContent.class)) {
             return query.where(Restrictions.eq("id", id)).getResult();
         }
@@ -44,7 +48,7 @@ public class UploadedContentFactory {
             query.delete(content);
         }
 
-        UploadedBlobFactory.getInstance().deleteBlob(content.getId());
+        UploadedBlobFactory.getInstance().deleteBlob(content.getIdHash());
     }
 
     /**
@@ -55,9 +59,10 @@ public class UploadedContentFactory {
      * @param owner Owner of the upload.
      * @return A new instance of {@code UploadedContent}.
      */
-    public static UploadedContent persistUploadMetadata(final String type, final String ip, final String fileName, final User owner) {
+    public static UploadedContent persistUploadMetadata(final String type, final String ip, final String fileName, final User owner, final long fileSize) {
         try (DatabaseInsertion<UploadedContent> query = HibernateUtil.getInstance().insert()) {
             UploadedContent upload = new UploadedContent(type, ip, fileName, owner);
+            upload.setFileSize(fileSize);
             query.insert(upload);
 
             return upload;

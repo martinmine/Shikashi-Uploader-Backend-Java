@@ -1,15 +1,20 @@
 package me.shikashi.img;
 
+import com.mongodb.gridfs.GridFSDBFile;
+import me.shikashi.img.database.DatabaseQuery;
+import me.shikashi.img.database.HibernateUtil;
+import me.shikashi.img.model.MongoDbFacade;
+import me.shikashi.img.model.UploadedBlobFactory;
+import me.shikashi.img.model.UploadedContent;
 import me.shikashi.img.resources.*;
 import me.shikashi.img.routing.RouterFactory;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
-import org.apache.catalina.Context;
-import org.apache.catalina.startup.Tomcat;
 import org.restlet.ext.servlet.ServerServlet;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +22,8 @@ import java.util.logging.Logger;
  * Contains main entry and the routing of resources.
  */
 public class ApplicationRouter extends Application {
+    private static final Logger LOGGER = Logger.getLogger(ApplicationRouter.class.getSimpleName());
+
     public ApplicationRouter() {
         super();
         setStatusService(new ShikashiStatusService());
@@ -31,7 +38,8 @@ public class ApplicationRouter extends Application {
         router.attach("/account/password", UserPasswordResource.class);
         router.attach("/login", LoginResource.class);
         router.attach("/register", RegistrationResource.class);
-        router.attach("/{key}", UploadedContentResource.class);
+        router.attach("/app", AppResource.class);
+       // router.attach("/{key}", UploadedContentResource.class);
         router.attach("/{key}/delete", DeleteUploadResource.class);
 
         return router;
@@ -42,7 +50,7 @@ public class ApplicationRouter extends Application {
      * @param args Command line arguments.
      * @throws Exception Something really bad happened.
      */
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
 
@@ -54,5 +62,33 @@ public class ApplicationRouter extends Application {
         rootCtx.addServletMapping("/*", "api");
         tomcat.start();
         tomcat.getServer().await();
-    }
+    }*/
+
+    /*
+    public static void main(String[] args) throws Exception {
+        List<UploadedContent> uploads;
+
+        try (DatabaseQuery<UploadedContent> query = HibernateUtil.getInstance().query(UploadedContent.class)) {
+            uploads = query.getResults();
+        }
+
+        LOGGER.info("Converting " + uploads.size() + " uploads");
+
+        final MongoDbFacade mongoDb = MongoDbFacade.getInstance();
+        final UploadedBlobFactory s3 = UploadedBlobFactory.getInstance();
+
+        for (UploadedContent upload : uploads) {
+            int uploadId = upload.getId();
+            final GridFSDBFile file = mongoDb.getBlob(uploadId);
+            if (file == null || file.getInputStream() == null) {
+                LOGGER.warning("File " + uploadId + " does not have any associated data, ignoring call");
+            } else {
+                LOGGER.info("Putting file " + uploadId + " into Amazon S3");
+                s3.storeBlob(file.getInputStream(), uploadId, upload.getMimeType(), file.getLength());
+            }
+        }
+    }*/
+    /*public static void main(String[] args) {
+        new S3ArchitecturalUpgrade().upgrade();
+    }*/
 }

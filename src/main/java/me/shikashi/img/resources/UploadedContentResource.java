@@ -1,11 +1,13 @@
 package me.shikashi.img.resources;
 
-import com.mongodb.gridfs.GridFSDBFile;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
+import org.apache.commons.io.IOUtils;
+import org.restlet.data.CacheDirective;
 import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -29,9 +31,9 @@ public class UploadedContentResource extends ServerResource {
      * Gets a file from the database.
      * @return A representation that streams the content from the data store.
      */
-    @Get
+   /* @Get
     public Representation getFile() {
-        final UploadedContent upload = getUploadedContent();
+        /*final UploadedContent upload = getUploadedContent();
 
         if (upload == null) {
             return null;
@@ -44,15 +46,22 @@ public class UploadedContentResource extends ServerResource {
             query.update(upload);
         }
 
+        getResponse().getCacheDirectives().add(CacheDirective.publicInfo());
+        getResponse().getCacheDirectives().add(CacheDirective.maxAge(31536000));
+        getResponse().setAge(0);
+
+      //  HeaderHelper.getResponseHeaders(getResponse()).add("ETag", upload.getIdHash());
+
         OutputRepresentation representation =  new OutputRepresentation(MediaType.valueOf(contentType)) {
             public void write(OutputStream os) {
-                final GridFSDBFile file = UploadedBlobFactory.getInstance().getBlob(upload.getId());
+                final S3ObjectInputStream file = UploadedBlobFactory.getInstance().getBlob(upload.getIdHash());
 
                 if (file == null) {
                     return;
                 }
+
                 try {
-                    file.writeTo(os);
+                    IOUtils.copy(file, os);
                 } catch (IOException ex) {
                     LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -71,9 +80,9 @@ public class UploadedContentResource extends ServerResource {
             representation.setDisposition(disposition);
         }
 
-
         return representation;
-    }
+        return null;
+    }*/
 
     private UploadedContent getUploadedContent() {
         final String key = ((String) getRequest().getAttributes().get("key")).split("\\.")[0];
