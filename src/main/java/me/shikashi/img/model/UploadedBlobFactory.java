@@ -5,9 +5,12 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.*;
 import me.shikashi.img.SystemConfiguration;
+import org.apache.commons.io.FilenameUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
@@ -80,5 +83,19 @@ public class UploadedBlobFactory {
         s3.putObject(new PutObjectRequest(this.uploadBuckedName, uploadId, is, objectMetadata));
 
         return objectMetadata.getContentLength();
+    }
+
+    public void createBlobAlias(final String uploadId, final String contentType, final String uploadName) {
+        if (!uploadName.contains(".")) {
+            return;
+        }
+
+        final String extension = FilenameUtils.getExtension(uploadName);
+        final ObjectMetadata objectMetadata = new ObjectMetadata();
+        final InputStream x = new ByteArrayInputStream(new byte[] {});
+        objectMetadata.setContentType(contentType);
+        objectMetadata.setContentLength(0);
+        objectMetadata.setHeader(Headers.REDIRECT_LOCATION, String.format("/%s", uploadId));
+        s3.putObject(new PutObjectRequest(this.uploadBuckedName, String.format("%s.%s", uploadId, extension), x, objectMetadata));
     }
 }

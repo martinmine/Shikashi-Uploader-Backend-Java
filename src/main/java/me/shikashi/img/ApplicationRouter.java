@@ -33,18 +33,20 @@ public class ApplicationRouter extends Application {
     public Restlet createInboundRoot() {
         Logger.getLogger("org.restlet.Component.LogService").setLevel(Level.SEVERE);
         final Router router = RouterFactory.makeRouter(getContext());
+        router.attach("/app", AppResource.class);
         router.attach("/upload", UploadResource.class);
         router.attach("/account/uploads", UserUploadsResource.class);
         router.attach("/account/password", UserPasswordResource.class);
         router.attach("/login", LoginResource.class);
         router.attach("/register", RegistrationResource.class);
-        router.attach("/app", AppResource.class);
-       // router.attach("/{key}", UploadedContentResource.class);
         router.attach("/{key}/delete", DeleteUploadResource.class);
 
         return router;
     }
 
+    public static void main(String[] args) {
+        AliasGenerator.createAliases();
+    }
     /**
      * Application main entry.
      * @param args Command line arguments.

@@ -10,6 +10,6 @@ import org.restlet.resource.ServerResource;
 public class AppResource extends ServerResource {
     @Get
     public GsonRepresentation<String> getVersion() {
-        return new GsonRepresentation<String>("Hi");
+        return new GsonRepresentation<>("Ey b0ss");
     }
 }

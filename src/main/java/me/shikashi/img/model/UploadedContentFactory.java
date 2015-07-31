@@ -5,6 +5,7 @@ import me.shikashi.img.database.DatabaseDeletion;
 import me.shikashi.img.database.DatabaseInsertion;
 import me.shikashi.img.database.DatabaseQuery;
 import me.shikashi.img.database.HibernateUtil;
+import org.apache.commons.io.FilenameUtils;
 import org.hashids.Hashids;
 import org.hibernate.criterion.Restrictions;
 
@@ -47,8 +48,10 @@ public class UploadedContentFactory {
         try (DatabaseDeletion<UploadedContent> query = HibernateUtil.getInstance().delete()) {
             query.delete(content);
         }
+        final String extension = FilenameUtils.getExtension(content.getFileName());
 
         UploadedBlobFactory.getInstance().deleteBlob(content.getIdHash());
+        UploadedBlobFactory.getInstance().deleteBlob(content.getIdHash() + "." + extension);
     }
 
     /**
