@@ -1,5 +1,8 @@
 package me.shikashi.img.resources;
 
+import me.shikashi.img.database.DatabaseQuery;
+import me.shikashi.img.database.DatabaseUpdate;
+import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.APIKey;
 import me.shikashi.img.model.APIKeyFactory;
 import me.shikashi.img.model.User;
@@ -40,6 +43,14 @@ public class LoginResource extends ServerResource {
         }
 
         final APIKey key = APIKeyFactory.createKey(user);
+
+        if ("Shikashi-Win32".equals(form.getFirstValue("client"))) {
+            key.setNoExpiration();
+
+            try (DatabaseUpdate<APIKey> query = HibernateUtil.getInstance().update()) {
+                query.update(key);
+            }
+        }
 
         return RepresentationFactory.makeRepresentation(key, APIKeyRepresentation.class);
     }

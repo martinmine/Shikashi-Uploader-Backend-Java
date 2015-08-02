@@ -32,6 +32,10 @@ public class APIKey {
         this.expirationTime = (System.currentTimeMillis() / 1000) + 60*60*24;
     }
 
+    public void setNoExpiration() {
+        expirationTime = Long.MAX_VALUE;
+    }
+
     public APIKey() {
     }
 
