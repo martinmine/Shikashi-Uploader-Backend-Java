@@ -47,6 +47,10 @@ public abstract class AuthenticatedServerResource extends ServerResource {
 
         final String[] authHeader = authString.split("-");
 
+        if (authHeader.length != 2) {
+            return;
+        }
+
         final String key = authHeader[0];
         final String id = authHeader[1];
 

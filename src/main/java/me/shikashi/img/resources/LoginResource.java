@@ -1,6 +1,5 @@
 package me.shikashi.img.resources;
 
-import me.shikashi.img.database.DatabaseQuery;
 import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.APIKey;
@@ -44,6 +43,7 @@ public class LoginResource extends ServerResource {
 
         final APIKey key = APIKeyFactory.createKey(user);
 
+        // If this is a login from a client, make the key last forever
         if ("Shikashi-Win32".equals(form.getFirstValue("client"))) {
             key.setNoExpiration();
 

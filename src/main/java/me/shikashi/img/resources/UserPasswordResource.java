@@ -1,9 +1,9 @@
 package me.shikashi.img.resources;
 
-import me.shikashi.img.model.UserFactory;
-import org.restlet.data.Form;
-import org.restlet.data.Status;
-import org.restlet.resource.Post;
+        import me.shikashi.img.model.UserFactory;
+        import org.restlet.data.Form;
+        import org.restlet.data.Status;
+        import org.restlet.resource.Post;
 
 /**
  * Resource for resetting the password for the user.
