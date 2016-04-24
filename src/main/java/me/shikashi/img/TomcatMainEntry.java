@@ -1,16 +1,21 @@
 package me.shikashi.img;
 
+import me.shikashi.img.database.HibernateUtil;
+import me.shikashi.img.model.UserFactory;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.restlet.ext.servlet.ServerServlet;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 /**
  * Main entry for starting the API as an embedded Tomcat-container.
  */
 public class TomcatMainEntry {
+    private static final Logger LOGGER = Logger.getLogger(TomcatMainEntry.class.getSimpleName());
+
     private TomcatMainEntry() {
     }
 
@@ -20,6 +25,11 @@ public class TomcatMainEntry {
      * @throws LifecycleException
      */
     public static void main(String[] args) throws LifecycleException {
+        LOGGER.info("Starting up API");
+
+        LOGGER.info("Connecting to database");
+        HibernateUtil.getInstance();
+
         Tomcat tomcat = new Tomcat();
 
         tomcat.setPort(8080);

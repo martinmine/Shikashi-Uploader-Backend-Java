@@ -34,10 +34,7 @@ public class UserFactory {
      * @param user User to set the password for.
      */
     public static void setPassword(String password, User user) {
-        final String salt = BCrypt.gensalt(5);
-        final String hashedPw = BCrypt.hashpw(password + PASSWORD_PEPPER, salt);
-
-        user.setPassword(hashedPw, salt);
+        user.setPassword(BCrypt.hashpw(password + PASSWORD_PEPPER, BCrypt.gensalt(5)));
     }
 
     /**
@@ -67,8 +64,7 @@ public class UserFactory {
             return null;
         }
 
-        final String hashedPw = getPasswordHash(user, password);
-        if (hashedPw.equals(user.getPassword())) {
+        if (validPassword(user, password)) {
             return user;
         } else {
             return null;
@@ -76,13 +72,13 @@ public class UserFactory {
     }
 
     /**
-     * Gets the password hash for a password for a user.
-     * @param user The user to get the password hash for.
-     * @param password Password to generate a hash of.
-     * @return Password hash.
+     * Checks if a password is valid for a user.
+     * @param user User to validate password for.
+     * @param password Cleartext password.
+     * @return True if password was valid, otherwise false.
      */
-    public static String getPasswordHash(User user, String password) {
-        return BCrypt.hashpw(password + PASSWORD_PEPPER, user.getPasswordSalt());
+    public static boolean validPassword(final User user, final String password) {
+        return BCrypt.checkpw(password + PASSWORD_PEPPER, user.getPassword());
     }
 
     /**

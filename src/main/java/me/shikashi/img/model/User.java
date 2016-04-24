@@ -8,15 +8,20 @@ import java.util.List;
 /**
  * Representing information about a registered user.
  */
-@Entity(name = "users")
+@Entity(name = "`User`")
 public class User {
     @Id
     @GeneratedValue
+    @Column(name = "`Id`")
     private int id;
 
-    @Column(unique=true)
+    @Column(unique = true, name = "`Email`")
     private String email;
+
+    @Column(name = "`Password`")
     private String password;
+
+    @Column(name = "`PasswordSalt`")
     private String passwordSalt;
 
     @OneToMany(mappedBy = "user")
@@ -44,17 +49,12 @@ public class User {
         return password;
     }
 
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setPassword(String password, String passwordSalt) {
+    public void setPassword(String password) {
         this.password = password;
-        this.passwordSalt = passwordSalt;
     }
 
     public List<UploadedContent> getUploads() {

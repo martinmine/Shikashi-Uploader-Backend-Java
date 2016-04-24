@@ -11,32 +11,40 @@ import java.util.Date;
 /**
  * Represents metadata about an upload.
  */
-@Entity
+@Entity(name = "`UploadedContent`")
 public class UploadedContent {
     private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("ID_PADDING"));
 
+    @Column(name = "`Id`")
     @Id
     @GeneratedValue
     private int id;
 
+    @Column(name = "`MimeType`")
     @FileUploadRepresentation
     private String mimeType;
 
+    @Column(name = "`UploaderIP`")
     private String uploaderIp;
 
+    @Column(name = "`FileName`")
     @FileUploadRepresentation
     private String fileName;
 
+    @Column(name = "`Uploaded`")
     @FileUploadRepresentation
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploaded;
 
+    @JoinColumn(name = "`OwnerId`")
     @ManyToOne
     private User owner;
 
+    @Column(name = "`ViewCount`")
     @FileUploadRepresentation
-    private int viewCount;
+    private Long viewCount;
 
+    @Column(name = "`FileSize`")
     @FileUploadRepresentation
     private long fileSize;
 
@@ -49,7 +57,7 @@ public class UploadedContent {
         this.uploaded = new Date();
         this.fileName = fileName;
         this.owner = owner;
-        this.viewCount = 0;
+        this.viewCount = Long.valueOf(0L);
     }
 
     public int getId() {

@@ -23,12 +23,11 @@ public class SystemConfiguration {
     }
 
     private SystemConfiguration() {
-        LOGGER.info("Reading config skipped");
-        /*try (FileInputStream inputStream = new FileInputStream("./config.properties")) {
+        try (FileInputStream inputStream = new FileInputStream("./config.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }*/
+        }
     }
 
     /**
@@ -37,13 +36,14 @@ public class SystemConfiguration {
      * @return Value for the config option, {@code null} if not found.
      */
     public String getProperty(final String key) {
+        /*
         String value;
         if ((value = System.getProperty(key)) != null) {
             return value;
         } else if ((value = System.getenv(key)) != null) {
             return value;
-        }
+        }*/
 
-        return null;
+        return properties.getProperty(key);
     }
 }

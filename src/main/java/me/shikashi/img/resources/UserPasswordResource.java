@@ -14,7 +14,7 @@ public class UserPasswordResource extends AuthenticatedServerResource {
         final String currentPassword = form.getFirstValue("currentPassword");
         final String newPassword = form.getFirstValue("newPassword");
 
-        if (!UserFactory.getPasswordHash(getUser(), currentPassword).equals(getUser().getPassword())) {
+        if (!UserFactory.validPassword(getUser(), currentPassword)) {
             setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
         } else {
             UserFactory.setPassword(newPassword, getUser());
