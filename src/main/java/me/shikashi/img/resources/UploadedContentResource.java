@@ -1,6 +1,5 @@
 package me.shikashi.img.resources;
 
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
 import me.shikashi.img.model.UploadedBlobFactory;

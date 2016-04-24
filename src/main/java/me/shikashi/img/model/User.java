@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Representing information about a registered user.
  */
-@Entity
+@Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue

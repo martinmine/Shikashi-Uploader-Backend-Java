@@ -26,7 +26,7 @@ public class HibernateUtil {
     private HibernateUtil() {
         LOGGER.info("Loading SQL driver");
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.postgresql.Driver");
         } catch (Exception ex) {
             LOGGER.log(Level.FATAL, ex.getMessage(), ex);
             LOGGER.fatal("Unable to start the main environment, no SQL driver found");

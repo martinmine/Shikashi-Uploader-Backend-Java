@@ -62,9 +62,12 @@ public class UploadResource extends AuthenticatedServerResource {
 
         long fileSize = Long.valueOf(sizeString);
 
-        final UploadedContent uploadedContent = UploadedContentFactory.persistUploadMetadata(item.getContentType(), getIpAddress(), item.getName(), getUser(), fileSize);
-        UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getIdHash(), item.getContentType(), fileSize, item.getName());
-        UploadedBlobFactory.getInstance().createBlobAlias(uploadedContent.getIdHash(), item.getContentType(), item.getName());
+        final UploadedContent uploadedContent = UploadedContentFactory.persistUploadMetadata(item.getContentType(),
+                        getIpAddress(), item.getName(), getUser(), fileSize);
+        UploadedBlobFactory.getInstance().storeBlob(stream, uploadedContent.getIdHash(),
+                item.getContentType(), fileSize, item.getName());
+        UploadedBlobFactory.getInstance().createBlobAlias(uploadedContent.getIdHash(),
+                item.getContentType(), item.getName());
 
         return RepresentationFactory.makeRepresentation(uploadedContent, FileUploadRepresentation.class);
     }
