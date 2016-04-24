@@ -27,9 +27,9 @@ public class TomcatMainEntry {
         File base = new File(System.getProperty("java.io.tmpdir"));
         Context rootCtx = tomcat.addContext("", base.getAbsolutePath());
         rootCtx.addParameter("org.restlet.application", ApplicationRouter.class.getCanonicalName());
-        Tomcat.addServlet(rootCtx, "dateServlet", new ServerServlet());
+        Tomcat.addServlet(rootCtx, "apiServlet", new ServerServlet());
 
-        rootCtx.addServletMapping("/*", "dateServlet");
+        rootCtx.addServletMapping("/*", "apiServlet");
         tomcat.start();
         tomcat.getServer().await();
     }
