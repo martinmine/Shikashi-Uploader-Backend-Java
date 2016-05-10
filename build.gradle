@@ -1,12 +1,22 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.5
 version = '1.0'
+group = 'shikashi-api'
+
+apply plugin: 'java'
 
 repositories {
     mavenCentral()
     maven {
         url "http://maven.restlet.com"
+    }
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+        attributes 'Main-Class': 'me.shikashi.img.TomcatMainEntry'
     }
 }
 
