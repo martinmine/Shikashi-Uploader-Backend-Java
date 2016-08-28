@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * Representing information about a registered user.
  */
-@Entity(name = "`User`")
+@Entity
+@Table(name = "`User`")
 public class User {
     @Id
     @SequenceGenerator(name="UserAI", sequenceName = "`User_Id_seq`")

@@ -11,7 +11,8 @@ import java.util.Date;
 /**
  * Represents metadata about an upload.
  */
-@Entity(name = "`UploadedContent`")
+@Entity
+@Table(name = "`UploadedContent`")
 public class UploadedContent {
     private static final int PADDING = Integer.valueOf(SystemConfiguration.getInstance().getProperty("ID_PADDING"));
 

@@ -10,7 +10,8 @@ import java.security.SecureRandom;
 /**
  * Contains data about an API key.
  */
-@Entity(name = "`APIKey`")
+@Entity
+@Table(name = "`APIKey`")
 public class APIKey {
     private static final SecureRandom RND = new SecureRandom();
 

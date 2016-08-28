@@ -34,7 +34,7 @@ public class InviteKeyFactory {
      */
     private static InviteKey getInviteKey(final String key) {
         try (DatabaseQuery<InviteKey> query = HibernateUtil.getInstance().query(InviteKey.class)) {
-            return query.where(Restrictions.eq("inviteKey", key)).getResult();
+            return query.whereEq("inviteKey", key).getResult();
         }
     }
 }

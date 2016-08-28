@@ -36,7 +36,7 @@ public class UploadedContentFactory {
 
     public static UploadedContent getUpload(final int id) {
         try (DatabaseQuery<UploadedContent> query = HibernateUtil.getInstance().query(UploadedContent.class)) {
-            return query.where(Restrictions.eq("id", id)).getResult();
+            return query.whereEq("id", id).getResult();
         }
     }
 

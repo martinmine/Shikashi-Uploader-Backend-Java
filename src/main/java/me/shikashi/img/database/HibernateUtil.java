@@ -6,9 +6,7 @@ import me.shikashi.img.database.lazyloading.LazyLoader;
 import me.shikashi.img.database.lazyloading.NoLoader;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
@@ -35,7 +33,6 @@ public class HibernateUtil {
 
         LOGGER.info("Reading configuration");
         Configuration configuration = new Configuration().configure();
-        configuration.configure();
         String configString = configuration.getProperty("hibernate.hikari.dataSource.url");
 
         configString = configString.replace("${env.DB_HOST}", SystemConfiguration.getInstance().getProperty("RDS_HOSTNAME"));
@@ -50,12 +47,8 @@ public class HibernateUtil {
         configuration.setProperty("hibernate.connection.password", SystemConfiguration.getInstance().getProperty("RDS_PASSWORD"));
         configuration.setProperty("hibernate.hikari.dataSource.password", SystemConfiguration.getInstance().getProperty("RDS_PASSWORD"));
 
-        LOGGER.info("Initializing service registry");
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
-                configuration.getProperties()).build();
-
         LOGGER.info("Building session factory");
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        sessionFactory = configuration.buildSessionFactory();
         LOGGER.info("Database initialized");
     }
     

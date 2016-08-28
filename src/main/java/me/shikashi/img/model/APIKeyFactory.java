@@ -32,9 +32,10 @@ public class APIKeyFactory {
      */
     public static APIKey getKey(final String key, final int id) {
         try (DatabaseQuery<APIKey> query = HibernateUtil.getInstance().query(APIKey.class)) {
-            return query.where(Restrictions.eq("id", id))
-                    .where(Restrictions.eq("identifier", key))
-                    .getResult();
+            return query.where(
+                    query.getCriteriaBuilder().equal(query.getRoot().get("id"), id),
+                    query.getCriteriaBuilder().equal(query.getRoot().get("identifier"), key)
+            ).getResult();
         }
     }
 }

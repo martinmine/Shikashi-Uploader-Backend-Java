@@ -3,6 +3,18 @@ group = 'shikashi-api'
 
 apply plugin: 'java'
 
+apply plugin: 'com.github.ben-manes.versions'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+    }
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -21,24 +33,24 @@ task fatJar(type: Jar) {
 }
 
 dependencies {
-    compile 'org.restlet.jee:org.restlet:2.3.0'
-    compile 'org.restlet.jee:org.restlet.ext.jackson:2.3.0'
-    compile 'org.restlet.jee:org.restlet.ext.servlet:2.3.0'
-    compile 'org.restlet.jee:org.restlet.ext.gson:2.3.0'
-    compile 'org.restlet.jee:org.restlet.ext.fileupload:2.3.0'
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.6.Final'
-    compile 'org.hibernate:hibernate-c3p0:4.3.8.Final'
-    compile 'org.hibernate:hibernate-hikaricp:4.3.8.Final'
-    compile 'org.slf4j:slf4j-simple:1.6.6'
+    compile 'org.restlet.jee:org.restlet:2.3.7'
+    compile 'org.restlet.jee:org.restlet.ext.jackson:2.3.7'
+    compile 'org.restlet.jee:org.restlet.ext.servlet:2.3.7'
+    compile 'org.restlet.jee:org.restlet.ext.gson:2.3.7'
+    compile 'org.restlet.jee:org.restlet.ext.fileupload:2.3.7'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.2.Final'
+    compile 'org.hibernate:hibernate-c3p0:5.2.2.Final'
+    compile 'org.hibernate:hibernate-hikaricp:5.2.2.Final'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
     compile 'javax.transaction:jta:1.1'
     compile 'org.mindrot:jbcrypt:0.3m'
-    compile 'org.slf4j:slf4j-simple:1.6.6'
-    compile 'com.amazonaws:aws-java-sdk:1.10.72'
-    compile 'commons-fileupload:commons-fileupload:1.3.1'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+    compile 'com.amazonaws:aws-java-sdk:1.11.29'
+    compile 'commons-fileupload:commons-fileupload:1.3.2'
     compile 'javax.servlet:javax.servlet-api:3.1.0'
     compile 'org.mongodb:mongo-java-driver:3.0.3'
     compile 'org.apache.tomcat:tomcat-catalina:8.5.0'
     compile 'org.apache.tomcat.embed:tomcat-embed-core:8.5.0'
-    compile 'org.slf4j:slf4j-simple:1.6.6'
-    compile 'org.postgresql:postgresql:9.4.1208.jre7'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+    compile 'org.postgresql:postgresql:9.4.1209'
 }

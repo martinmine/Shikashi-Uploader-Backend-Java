@@ -1,6 +1,7 @@
 package me.shikashi.img;
 
 import me.shikashi.img.database.HibernateUtil;
+import me.shikashi.img.model.User;
 import me.shikashi.img.model.UserFactory;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;

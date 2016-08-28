@@ -5,7 +5,6 @@ import me.shikashi.img.database.DatabaseInsertion;
 import me.shikashi.img.database.DatabaseQuery;
 import me.shikashi.img.database.DatabaseUpdate;
 import me.shikashi.img.database.HibernateUtil;
-import org.hibernate.criterion.Restrictions;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -56,7 +55,7 @@ public class UserFactory {
     public static User getUser(final String email, final String password) {
         User user;
         try (DatabaseQuery<User> query = HibernateUtil.getInstance().query(User.class)) {
-            user = query.where(Restrictions.eq("email", email))
+            user = query.whereEq("email", email)
                     .getResult();
         }
 
@@ -88,7 +87,7 @@ public class UserFactory {
      */
     public static User getUserByEmail(final String email) {
         try (DatabaseQuery<User> query = HibernateUtil.getInstance().query(User.class)) {
-            return query.where(Restrictions.eq("email", email)).getResult();
+            return query.whereEq("email", email).getResult();
         }
     }
 }
