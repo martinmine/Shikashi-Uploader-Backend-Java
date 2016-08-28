@@ -16,7 +16,7 @@ public class APIKey {
     private static final SecureRandom RND = new SecureRandom();
 
     @Id
-    @SequenceGenerator(name="apiKeyPKgen", sequenceName = "`APIKey_Id_seq`")
+    @SequenceGenerator(name="apiKeyPKgen", sequenceName = "`APIKey_Id_seq`", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "apiKeyPKgen")
     @Column(name = "`Id`")
     private int id;

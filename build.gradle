@@ -1,4 +1,4 @@
-version = '1.0'
+version = '1.1'
 group = 'shikashi-api'
 
 apply plugin: 'java'
@@ -39,7 +39,6 @@ dependencies {
     compile 'org.restlet.jee:org.restlet.ext.gson:2.3.7'
     compile 'org.restlet.jee:org.restlet.ext.fileupload:2.3.7'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.2.Final'
-    compile 'org.hibernate:hibernate-c3p0:5.2.2.Final'
     compile 'org.hibernate:hibernate-hikaricp:5.2.2.Final'
     compile 'org.slf4j:slf4j-simple:1.7.21'
     compile 'javax.transaction:jta:1.1'

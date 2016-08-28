@@ -31,6 +31,11 @@ public class TomcatMainEntry {
         LOGGER.info("Connecting to database");
         HibernateUtil.getInstance();
 
+        User user = UserFactory.getUserByEmail("martin_mine@hotmail.com");
+        if (user == null) {
+            throw new RuntimeException("Db is broken");
+        }
+
         Tomcat tomcat = new Tomcat();
 
         tomcat.setPort(8080);

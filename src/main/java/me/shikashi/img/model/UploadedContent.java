@@ -18,7 +18,7 @@ public class UploadedContent {
 
     @Column(name = "`Id`")
     @Id
-    @SequenceGenerator(name = "UploadedContentAI", sequenceName = "`UploadedContent_Id_seq`")
+    @SequenceGenerator(name = "UploadedContentAI", sequenceName = "`UploadedContent_Id_seq`", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UploadedContentAI")
     private int id;
 

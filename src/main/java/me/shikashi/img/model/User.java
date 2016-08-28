@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "`User`")
 public class User {
     @Id
-    @SequenceGenerator(name="UserAI", sequenceName = "`User_Id_seq`")
+    @SequenceGenerator(name="UserAI", sequenceName = "`User_Id_seq`", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserAI")
     @Column(name = "`Id`")
     private int id;

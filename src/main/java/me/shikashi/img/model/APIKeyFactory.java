@@ -3,7 +3,6 @@ package me.shikashi.img.model;
 import me.shikashi.img.database.DatabaseInsertion;
 import me.shikashi.img.database.DatabaseQuery;
 import me.shikashi.img.database.HibernateUtil;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Factory class for API keys.

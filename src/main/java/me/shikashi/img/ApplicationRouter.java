@@ -1,11 +1,13 @@
 package me.shikashi.img;
 
 import me.shikashi.img.resources.*;
-import me.shikashi.img.routing.RouterFactory;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
+import org.restlet.service.CorsService;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,17 +15,25 @@ import java.util.logging.Logger;
  * Contains main entry and the routing of resources.
  */
 public class ApplicationRouter extends Application {
-    private static final Logger LOGGER = Logger.getLogger(ApplicationRouter.class.getSimpleName());
-
     public ApplicationRouter() {
         super();
         setStatusService(new ShikashiStatusService());
+        configureCORS();
+    }
+
+    private void configureCORS() {
+        final CorsService corsService = new CorsService();
+        corsService.setAllowingAllRequestedHeaders(true);
+        corsService.setAllowedOrigins(new HashSet(Arrays.asList("*")));
+        corsService.setAllowedCredentials(true);
+        corsService.setSkippingResourceForCorsOptions(true);
+        getServices().add(corsService);
     }
 
     @Override
     public Restlet createInboundRoot() {
         Logger.getLogger("org.restlet.Component.LogService").setLevel(Level.SEVERE);
-        final Router router = RouterFactory.makeRouter(getContext());
+        final Router router = new Router();
         router.attach("/app", AppResource.class);
         router.attach("/upload", UploadResource.class);
         router.attach("/account/uploads", UserUploadsResource.class);

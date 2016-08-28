@@ -7,7 +7,6 @@ import me.shikashi.img.database.DatabaseQuery;
 import me.shikashi.img.database.HibernateUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.hashids.Hashids;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Factory for user uploads.

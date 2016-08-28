@@ -1,8 +1,6 @@
 package me.shikashi.img.database;
 
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;

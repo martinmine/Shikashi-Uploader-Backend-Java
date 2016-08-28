@@ -1,23 +1,10 @@
 package me.shikashi.img.resources;
 
-import me.shikashi.img.database.DatabaseUpdate;
-import me.shikashi.img.database.HibernateUtil;
-import me.shikashi.img.model.UploadedBlobFactory;
 import me.shikashi.img.model.UploadedContentFactory;
 import me.shikashi.img.model.UploadedContent;
-import org.apache.commons.io.IOUtils;
-import org.restlet.data.CacheDirective;
-import org.restlet.data.Disposition;
-import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.representation.OutputRepresentation;
-import org.restlet.representation.Representation;
-import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

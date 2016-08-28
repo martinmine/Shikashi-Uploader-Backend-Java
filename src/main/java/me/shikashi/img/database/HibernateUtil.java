@@ -15,7 +15,6 @@ import org.jboss.logging.Logger.Level;
  */
 public class HibernateUtil {
     private static final String HIBERNATE_CONNECTION_URL = "hibernate.connection.url";
-    private static final String HIKARI_CONNECTION_URL = "hibernate.hikari.dataSource.url";
     private static final Logger LOGGER = Logger.getLogger(HibernateUtil.class);
     private static HibernateUtil instance = new HibernateUtil();
     
@@ -33,18 +32,15 @@ public class HibernateUtil {
 
         LOGGER.info("Reading configuration");
         Configuration configuration = new Configuration().configure();
-        String configString = configuration.getProperty("hibernate.hikari.dataSource.url");
+        String configString = configuration.getProperty("hibernate.connection.url");
 
         configString = configString.replace("${env.DB_HOST}", SystemConfiguration.getInstance().getProperty("RDS_HOSTNAME"));
         configString = configString.replace("${env.DB_PORT}", SystemConfiguration.getInstance().getProperty("RDS_PORT"));
         configString = configString.replace("${env.DB_NAME}", SystemConfiguration.getInstance().getProperty("RDS_DB_NAME"));
         configuration.setProperty(HIBERNATE_CONNECTION_URL, configString);
-        configuration.setProperty(HIKARI_CONNECTION_URL, configString);
         LOGGER.info("Connecting to " + configString);
 
-        configuration.setProperty("hibernate.connection.username", SystemConfiguration.getInstance().getProperty("RDS_USERNAME"));
         configuration.setProperty("hibernate.hikari.dataSource.user", SystemConfiguration.getInstance().getProperty("RDS_USERNAME"));
-        configuration.setProperty("hibernate.connection.password", SystemConfiguration.getInstance().getProperty("RDS_PASSWORD"));
         configuration.setProperty("hibernate.hikari.dataSource.password", SystemConfiguration.getInstance().getProperty("RDS_PASSWORD"));
 
         LOGGER.info("Building session factory");
