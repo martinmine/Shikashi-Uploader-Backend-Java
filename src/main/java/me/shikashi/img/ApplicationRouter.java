@@ -7,6 +7,7 @@ import org.restlet.routing.Router;
 import org.restlet.service.CorsService;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public class ApplicationRouter extends Application {
     private void configureCORS() {
         final CorsService corsService = new CorsService();
         corsService.setAllowingAllRequestedHeaders(true);
-        corsService.setAllowedOrigins(new HashSet(Arrays.asList("*")));
+        corsService.setAllowedOrigins(new HashSet<>(Collections.singletonList("*")));
         corsService.setAllowedCredentials(true);
         corsService.setSkippingResourceForCorsOptions(true);
         getServices().add(corsService);
