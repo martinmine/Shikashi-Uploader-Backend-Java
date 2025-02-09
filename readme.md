@@ -1,0 +1,1 @@
+This project is no longer maintained and is superseded by https://github.com/martinmine/Shikashi-Uploader-Backend 
